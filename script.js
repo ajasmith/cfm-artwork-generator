@@ -39,6 +39,8 @@ const overlayColourPicker = Spectrum.getInstance('#overlay-colour', {
 	color: "transparent",
 });
 
+const formatShowHost = (sh) => sh.length > 0 ? "w/ " + sh.toString() : "";
+
 // Resize HTML5 Canvas to fit parent wrapper (size controlled by CSS)
 html5Canvas.style.width = "100%";
 html5Canvas.style.height = "100%";
@@ -57,7 +59,7 @@ canvas.hoverCursor = 'pointer';
 document.fonts.ready.then(() => {
 	// Initialise variables
 	let showName = document.getElementById("show-name").value;
-	let showHost = document.getElementById("show-host").value;
+	let showHost = formatShowHost(document.getElementById("show-host").value);
 	let showDate = new Date(document.getElementById("show-date").value || Date());
 	let textPosition = document.getElementById("text-position").value = 0;
 	// Following two require the fabric.Textbox of showName and showHost to be created first => set textPosition to 0 above
@@ -277,7 +279,7 @@ document.fonts.ready.then(() => {
 		selectable: false,
 	});
 
-	let showHostText = new fabric.TextboxWithCustomBackgroundFill("w/ " + showHost, {
+	let showHostText = new fabric.TextboxWithCustomBackgroundFill(showHost, {
 		fontSize: 68,
 		fontFamily: "GT Maru",
 		lineHeight: LINEHEIGHT,
@@ -385,9 +387,9 @@ document.fonts.ready.then(() => {
 
 	canvas.add(showHostText);
 	document.getElementById("show-host").addEventListener('input', function(e) {
-		showHost = e.target.value
+		showHost = formatShowHost(e.target.value)
 		showHostText.set({
-			text: "w/ " + showHost,
+			text: showHost,
 		})
 		positionText()
 		canvas.renderAll()
